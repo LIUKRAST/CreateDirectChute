@@ -8,34 +8,44 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.RenderShape;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.neoforged.neoforge.capabilities.Capabilities;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
+import org.jetbrains.annotations.Nullable;
 import org.lwjgl.system.NonnullDefault;
 
 @NonnullDefault
-public class DirectChuteBlock extends Block implements IWrenchable {
+public class DirectChuteBlock extends BaseEntityBlock implements IWrenchable {
 
     public DirectChuteBlock(Properties properties) {
         super(properties);
     }
 
+
+
+    @SuppressWarnings("deprecation")
     @Override
-    protected void onPlace(BlockState state, Level level, BlockPos pos, BlockState oldState, boolean movedByPiston) {
+    public void onPlace(BlockState state, Level level, BlockPos pos, BlockState oldState, boolean movedByPiston) {
         super.onPlace(state, level, pos, oldState, movedByPiston);
         if(level.isClientSide) return;
         level.scheduleTick(pos, state.getBlock(), 5);
     }
 
+    @SuppressWarnings("deprecation")
     @Override
-    protected void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
+    public void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
         super.tick(state, level, pos, random);
 
-        var above = level.getCapability(Capabilities.ItemHandler.BLOCK, pos.above(), Direction.DOWN);
-        var below = level.getCapability(Capabilities.ItemHandler.BLOCK, pos.below(), Direction.UP);
+        var be = level.getBlockEntity(pos.above());
+        var above = be == null ? null : be.getCapability(ForgeCapabilities.ITEM_HANDLER, Direction.DOWN).orElse(null);
+        var be1 = level.getBlockEntity(pos.below());
+        var below = be1 == null ? null : be1.getCapability(ForgeCapabilities.ITEM_HANDLER, Direction.UP).orElse(null);
         level.scheduleTick(pos, state.getBlock(), 5);
         if(above == null || below == null) return;
 
@@ -74,8 +84,19 @@ public class DirectChuteBlock extends Block implements IWrenchable {
         return 16;
     }
 
+    @SuppressWarnings("deprecation")
     @Override
-    protected VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
+    public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
         return Shapes.or(box(2, 0, 2, 14, 8, 14), box(1, 8, 1, 15, 16, 15));
+    }
+
+    @Override
+    public @Nullable BlockEntity newBlockEntity(BlockPos blockPos, BlockState blockState) {
+        return new DirectChuteBlockEntity(blockPos, blockState);
+    }
+
+    @Override
+    public RenderShape getRenderShape(BlockState p_49232_) {
+        return RenderShape.MODEL;
     }
 }
