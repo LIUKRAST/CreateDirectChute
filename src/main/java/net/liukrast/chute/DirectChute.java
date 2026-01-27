@@ -37,7 +37,6 @@ public class DirectChute {
     private static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(DirectChuteConstants.MOD_ID);
     private static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITY_TYPES = DeferredRegister.create(BuiltInRegistries.BLOCK_ENTITY_TYPE, DirectChuteConstants.MOD_ID);
 
-    public static final DeferredItem<BlockItem> DIRECT_CHUTE_BLOCK_ITEM = ITEMS.registerSimpleBlockItem("direct_chute", DIRECT_CHUTE);
     public static final DeferredBlock<Block> DIRECT_CHUTE = BLOCKS.register("direct_chute", () -> new DirectChuteBlock(BlockBehaviour.Properties.ofFullCopy(AllBlocks.ZINC_BLOCK.get())));
     private static final DeferredItem<BlockItem> DIRECT_CHUTE_BLOCK_ITEM = ITEMS.register("direct_chute", () -> new DirectChuteItem(DIRECT_CHUTE.get(), new Item.Properties()));
     @SuppressWarnings("DataFlowIssue")
