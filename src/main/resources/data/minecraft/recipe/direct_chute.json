@@ -4,7 +4,7 @@
   "group": "boat",
   "key": {
     "A": {
-      "item": "create:copper_sheet"
+      "item": "create:zinc_ingot"
     },
     "B": {
       "item": "create:chute"
