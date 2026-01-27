@@ -1,7 +1,7 @@
 {
   "required": true,
   "minVersion": "0.8",
-  "package": "net.liukrast.directchute.mixin",
+  "package": "net.liukrast.chute.mixin",
   "compatibilityLevel": "JAVA_8",
   "refmap": "direct_chute.refmap.json",
   "mixins": [

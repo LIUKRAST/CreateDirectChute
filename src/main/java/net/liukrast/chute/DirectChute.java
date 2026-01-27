@@ -1,4 +1,4 @@
-package net.liukrast.directchute;
+package net.liukrast.chute;
 
 import com.simibubi.create.AllBlocks;
 import com.simibubi.create.AllCreativeModeTabs;
@@ -27,7 +27,10 @@ import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
-@Mod(DirectChute.MOD_ID)
+import java.util.ArrayList;
+import java.util.List;
+
+@Mod(DirectChuteConstants.MOD_ID)
 public class DirectChute {
 
     private static final DeferredRegister.Blocks BLOCKS = DeferredRegister.createBlocks(DirectChuteConstants.MOD_ID);
