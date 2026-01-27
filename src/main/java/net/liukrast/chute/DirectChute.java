@@ -55,6 +55,7 @@ public class DirectChute {
         BLOCK_ENTITY_TYPES.register(modEventBus);
 
         modEventBus.register(this);
+        container.registerConfig(ModConfig.Type.SERVER, DirectChuteConfig.SPEC);
     }
 
     @SubscribeEvent
