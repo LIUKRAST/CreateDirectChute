@@ -2,7 +2,10 @@
 /.gradle/
 /build/
 /build/classes/java/main/
-/run/*
+/run/
 /.idea/
-/gradlew
-/gradlew.bat
+gradlew
+gradlew.bat
+/repo/
+/libs/
+/src/generated/resources/.cache
