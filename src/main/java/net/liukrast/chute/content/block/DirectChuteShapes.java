@@ -1,6 +1,5 @@
 package net.liukrast.chute.content.block;
 
-import com.simibubi.create.AllBlocks;
 import com.simibubi.create.AllShapes;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.block.Block;
