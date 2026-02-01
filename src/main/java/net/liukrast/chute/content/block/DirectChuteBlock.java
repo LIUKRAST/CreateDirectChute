@@ -70,6 +70,16 @@ public class DirectChuteBlock extends BaseEntityBlock implements IWrenchable, Pr
     protected void onPlace(BlockState state, Level level, BlockPos pos, BlockState oldState, boolean movedByPiston) {
         super.onPlace(state, level, pos, oldState, movedByPiston);
         if(level.isClientSide) return;
+        for(int x = -1; x < 2; x++) {
+            for(int y = -1; y < 2; y++) {
+                for(int z = -1; z < 2; z++) {
+                    BlockPos pos1 = pos.offset(x, y, z);
+                    if(level.getBlockState(pos1).is(this)) {
+                        level.invalidateCapabilities(pos1);
+                    }
+                }
+            }
+        }
         reschedule((ServerLevel) level, state, pos);
     }
 
