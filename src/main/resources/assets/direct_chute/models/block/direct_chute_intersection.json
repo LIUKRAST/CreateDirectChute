@@ -2,8 +2,7 @@
 	"format_version": "1.21.11",
 	"credit": "Made with Blockbench",
 	"textures": {
-		"1": "direct_chute:block/direct_chute",
-		"3": "direct_chute:block/encased_direct_chute",
+		"main": "direct_chute:block/direct_chute",
 		"particle": "direct_chute:block/encased_direct_chute"
 	},
 	"elements": [
@@ -11,12 +10,12 @@
 			"from": [0, 0, 0],
 			"to": [16, 16, 16],
 			"faces": {
-				"north": {"uv": [0, 0, 16, 16], "texture": "#3"},
-				"east": {"uv": [0, 0, 16, 16], "texture": "#3"},
-				"south": {"uv": [0, 0, 16, 16], "texture": "#3"},
-				"west": {"uv": [0, 0, 16, 16], "texture": "#3"},
-				"up": {"uv": [0, 8, 8, 16], "texture": "#1"},
-				"down": {"uv": [0, 8, 8, 16], "texture": "#1"}
+				"north": {"uv": [0, 0, 16, 16], "texture": "#particle", "cullface": "north"},
+				"east": {"uv": [0, 0, 16, 16], "texture": "#particle", "cullface": "east"},
+				"south": {"uv": [0, 0, 16, 16], "texture": "#particle", "cullface": "south"},
+				"west": {"uv": [0, 0, 16, 16], "texture": "#particle", "cullface": "west"},
+				"up": {"uv": [0, 8, 8, 16], "texture": "#main", "cullface": "up"},
+				"down": {"uv": [0, 8, 8, 16], "texture": "#main", "cullface": "down"}
 			}
 		}
 	],
