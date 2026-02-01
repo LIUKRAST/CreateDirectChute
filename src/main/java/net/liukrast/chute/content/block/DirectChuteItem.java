@@ -57,8 +57,22 @@ public class DirectChuteItem extends BlockItem {
                 }
                 if (stateToUpdate.getValue(DirectChuteBlock.FACING).getAxis().isVertical())
                     level.setBlockAndUpdate(posToUpdate, stateToUpdate.setValue(DirectChuteBlock.SHAPE, DirectChuteBlock.Shape.ENCASED));
+                else {
+                    int conns = 1;
+                    Direction dir1 = dir;
+                    for(int i = 0; i < 4; i++) {
+                        dir1 = dir1.getClockWise();
+                        var tState = level.getBlockState(posToUpdate.relative(dir1).above());
+                        if (tState.is(this.getBlock()) && tState.getValue(DirectChuteBlock.FACING).equals(dir1)) conns++;
+                    }
+                    if(conns > 1) level.setBlockAndUpdate(posToUpdate, stateToUpdate.setValue(DirectChuteBlock.SHAPE, DirectChuteBlock.Shape.ENCASED));
+                }
             }
             return state.setValue(DirectChuteBlock.FACING, dir).setValue(DirectChuteBlock.SHAPE, DirectChuteBlock.Shape.INTERSECTION);
+        }
+        var tState = level.getBlockState(pos.below());
+        if(tState.is(this.getBlock()) && tState.getValue(DirectChuteBlock.FACING).getAxis().isHorizontal()) {
+            level.setBlockAndUpdate(pos.below(), tState.setValue(DirectChuteBlock.SHAPE, DirectChuteBlock.Shape.ENCASED));
         }
         return super.getPlacementState(context);
     }

@@ -105,7 +105,14 @@ public class DirectChuteBlock extends BaseEntityBlock implements IWrenchable, Pr
             if(state2.is(this)) shouldBeEnd = false;
             level.setBlockAndUpdate(pos1, state1.setValue(FACING, dir).setValue(SHAPE, shouldBeEnd ? Shape.INTERSECTION : Shape.NORMAL));
             level.playSound(null, pos, SoundEvents.NETHERITE_BLOCK_HIT, SoundSource.BLOCKS, 0.5f, 1.05f);
-            if(state.getValue(FACING).getAxis().isHorizontal()) {
+            int conns = 0;
+            var dir1 = Direction.NORTH;
+            for(int i = 0; i < 4; i++) {
+                dir1 = dir1.getClockWise();
+                var tState = level.getBlockState(pos.relative(dir).above());
+                if(tState.is(this) && tState.getValue(FACING).equals(dir1)) conns++;
+            }
+            if(state.getValue(FACING).getAxis().isHorizontal() && conns <= 1) {
                 level.setBlockAndUpdate(pos, state.setValue(SHAPE, Shape.NORMAL));
             } else {
                 level.setBlockAndUpdate(pos, state.setValue(SHAPE, Shape.ENCASED));
@@ -120,6 +127,17 @@ public class DirectChuteBlock extends BaseEntityBlock implements IWrenchable, Pr
         var level = context.getLevel();
         var pos = context.getClickedPos();
         if(state.getValue(SHAPE) == Shape.ENCASED) {
+            Direction dir = Direction.NORTH;
+            int conns = 0;
+            for(int i = 0; i < 4; i++) {
+                dir = dir.getClockWise();
+                var tPos = pos.relative(dir).above();
+                var tState = level.getBlockState(tPos);
+                if(tState.is(this) && tState.getValue(FACING).equals(dir)) conns++;
+            }
+            if(!(conns == 1 && state.getValue(FACING).getAxis().isHorizontal()) && conns > 0) return InteractionResult.FAIL;
+
+
             level.setBlockAndUpdate(pos, state.setValue(SHAPE, Shape.NORMAL));
             level.playSound(null, pos, SoundEvents.NETHERITE_BLOCK_HIT, SoundSource.BLOCKS, 0.5f, 1.05f);
             return InteractionResult.SUCCESS;
@@ -141,10 +159,21 @@ public class DirectChuteBlock extends BaseEntityBlock implements IWrenchable, Pr
             }
         }
         var dir = state.getValue(FACING);
-        if(dir.getAxis().isVertical()) return;
-        var stateToChange = level.getBlockState(pos.relative(dir.getOpposite()).below());
-        if(stateToChange.is(this) && stateToChange.getValue(FACING).equals(dir)) {
-            level.setBlockAndUpdate(pos.relative(dir.getOpposite()).below(), stateToChange.setValue(SHAPE, Shape.INTERSECTION));
+        var tPos = dir.getAxis().isVertical() ? pos.below() : pos.relative(dir.getOpposite()).below();
+        var stateToChange = level.getBlockState(tPos);
+        if(stateToChange.is(this)) {
+            if(stateToChange.getValue(FACING).equals(dir)) {
+                level.setBlockAndUpdate(tPos, stateToChange.setValue(SHAPE, Shape.INTERSECTION));
+            } else {
+                int conns = 0;
+                Direction dir2 = dir.getAxis().isVertical() ? Direction.NORTH : dir;
+                for(int i = 0; i < 4; i++) {
+                    dir2 = dir2.getClockWise();
+                    var tState = level.getBlockState(tPos.relative(dir2).above());
+                    if (tState.is(this) && tState.getValue(DirectChuteBlock.FACING).equals(dir2)) conns++;
+                }
+                if(conns <= 1) level.setBlockAndUpdate(tPos, stateToChange.setValue(SHAPE, Shape.NORMAL));
+            }
         }
     }
 
