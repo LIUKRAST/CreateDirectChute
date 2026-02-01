@@ -1,0 +1,3 @@
+- Fixed block entity cache not updating correctly
+- Fixed several issues with block display and particles
+- Fixed several block interactions/connections that were broken
