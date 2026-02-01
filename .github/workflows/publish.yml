@@ -5,7 +5,7 @@ on:
 
 jobs:
   call-shared-workflow:
-    uses: LIUKRAST/LIUKRAST/util/publish.yml@main
+    uses: LIUKRAST/LIUKRAST/.github/workflows/publish.yml@main
     permissions:
       contents: write
     secrets:
